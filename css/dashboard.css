@@ -1,0 +1,153 @@
+/* ===== DASHBOARD LAYOUT ===== */
+.dash-layout { display: flex; min-height: 100vh; padding-top: 65px; }
+
+/* Sidebar - Refined #111 Dark Mode */
+.dash-sidebar { 
+  width: 260px; 
+  background: var(--dark); 
+  color: #fff; 
+  padding: 1.5rem 0; 
+  flex-shrink: 0; 
+  position: sticky; 
+  top: 65px; 
+  height: calc(100vh - 65px); 
+  border-right: 1px solid rgba(255,255,255,0.05);
+}
+.dash-sidebar .sidebar-title { 
+  font-size: 0.65rem; 
+  font-weight: 600; 
+  text-transform: uppercase; 
+  letter-spacing: 0.12em; 
+  color: rgba(255,255,255,1); 
+  padding: 0 1.5rem; 
+  margin-bottom: 1.5rem; 
+}
+.dash-sidebar a { 
+  display: flex; 
+  align-items: center; 
+  gap: 0.85rem; 
+  padding: 0.7rem 1.5rem; 
+  color: rgba(255,255,255,0.5); 
+  font-size: 0.85rem; 
+  font-weight: 500; 
+  transition: all 0.2s; 
+}
+.dash-sidebar a:hover { color: rgba(255,255,255,0.8); background: rgba(255,255,255,0.03); }
+.dash-sidebar a.active { 
+  color: #fff; 
+  background: rgba(239, 255, 0, 0.04); 
+  box-shadow: inset 3px 0 0 var(--yellow); /* Glow/Accent border */
+}
+
+/* Main Content */
+.dash-main { flex: 1; padding: 2.5rem 3rem; background: var(--bg); min-height: 100%; }
+.dash-header { display: flex; justify-content: space-between; align-items: start; margin-bottom: 3rem; }
+.dash-header h1 { font-size: 1.5rem; font-weight: 600; margin-bottom: 0.25rem; }
+.dash-header p { font-size: 0.85rem; color: var(--gray); }
+
+/* Stat Cards - Floating SaaS Style */
+.stat-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-bottom: 3rem; }
+.stat-card { 
+  background: #fff; 
+  border: 1px solid var(--border); 
+  border-radius: var(--radius-card); 
+  padding: 1.5rem; 
+  box-shadow: var(--shadow);
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+.stat-card:hover { transform: translateY(-3px); border-color: #d0d0d0; }
+.stat-card .stat-card-label { font-size: 0.75rem; color: var(--gray); font-weight: 600; margin-bottom: 0.5rem; display: block; }
+.stat-card .stat-card-num { 
+  font-family: var(--font-heading); 
+  font-weight: 600; 
+  font-size: 1.75rem; 
+  color: var(--black);
+}
+
+/* Match Score Card - Refined Accent */
+.stat-card.accent { border-color: rgba(239, 255, 0, 0.3); }
+.stat-card.accent .stat-card-num { 
+  background: linear-gradient(135deg, #000 0%, #444 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 700;
+}
+.match-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(239, 255, 0, 0.2);
+  color: #000;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  margin-top: 0.5rem;
+}
+
+/* Section Title */
+.section-title { 
+  font-size: 0.9rem; 
+  font-weight: 600; 
+  margin-bottom: 1.25rem; 
+  display: flex; 
+  align-items: center; 
+  justify-content: space-between; 
+}
+.section-link { font-size: 0.75rem; color: var(--gray); font-weight: 500; }
+
+/* Dash Table - Modern Job List */
+.dash-table { 
+  width: 100%; 
+  border-collapse: separate; 
+  border-spacing: 0;
+  background: #fff; 
+  border-radius: var(--radius-card); 
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+.dash-table th { 
+  text-align: left; 
+  padding: 0.8rem 1.5rem; 
+  font-size: 0.65rem; 
+  text-transform: uppercase; 
+  letter-spacing: 0.08em; 
+  color: var(--gray); 
+  background: #fafafa;
+  border-bottom: 1px solid var(--border);
+}
+.dash-table td { 
+  padding: 1.2rem 1.5rem; 
+  font-size: 0.85rem; 
+  border-bottom: 1px solid #f2f2f2;
+  transition: background 0.1s ease;
+}
+.dash-table tr:last-child td { border-bottom: none; }
+.dash-table tr:hover td { background: #fdfdfd; }
+
+/* Status Badges */
+.badge-pill {
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  font-size: 0.65rem;
+  font-weight: 600;
+}
+.badge-hot { background: rgba(239, 255, 0, 0.15); color: #000; }
+.badge-new { background: rgba(0, 0, 0, 0.05); color: var(--gray); }
+
+/* User Dropdown Refinement */
+.user-menu { display: flex; align-items: center; gap: 0.75rem; cursor: pointer; padding: 4px 8px; border-radius: 8px; transition: background 0.1s; }
+.user-menu:hover { background: rgba(0,0,0,0.05); }
+
+/* Sidebar Icons */
+.sidebar-icon { font-size: 1.1rem; opacity: 0.7; width: 1.2rem; text-align: center; }
+
+/* Responsive Improvements */
+@media (max-width: 1024px) {
+  .stat-cards { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 768px) {
+  .dash-sidebar { display: none; }
+  .dash-main { padding: 1.5rem; }
+  .stat-cards { grid-template-columns: 1fr; }
+}

@@ -1,0 +1,17 @@
+/* ===== AUTH PAGES ===== */
+.auth-page { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: radial-gradient(ellipse at top, rgba(245,235,11,0.15) 0%, #fff 60%); padding: 100px 2rem 3rem; }
+.auth-card { background: #fff; border: 1px solid rgba(0,0,0,0.08); border-radius: 2rem; padding: 3rem; width: 100%; max-width: 440px; }
+.auth-card h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+.auth-card .subtitle { color: var(--gray); font-size: 0.95rem; margin-bottom: 2rem; }
+.auth-card .form-input { width: 100%; }
+
+/* Role selector */
+.role-toggle { display: flex; background: #f0f0f0; border-radius: var(--radius-pill); padding: 4px; margin-bottom: 1.5rem; }
+.role-toggle label { flex: 1; text-align: center; padding: 10px; border-radius: var(--radius-pill); cursor: pointer; font-weight: 700; font-size: 0.85rem; transition: all 0.2s; }
+.role-toggle input { display: none; }
+.role-toggle input:checked + label { background: #000; color: #fff; }
+
+.auth-link { text-align: center; margin-top: 1.5rem; font-size: 0.9rem; color: var(--gray); }
+.auth-link a { color: #000; font-weight: 700; text-decoration: underline; }
+
+.auth-footer { margin-top: 2rem; text-align: center; font-size: 0.8rem; color: rgba(0,0,0,0.3); }

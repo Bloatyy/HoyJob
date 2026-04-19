@@ -1,0 +1,196 @@
+/* ===== MARKETPLACE / JOBS PAGE REFINEMENTS ===== */
+
+/* Search Command Bar (Raycast/Linear style) */
+.jobs-search-container {
+  margin-bottom: 2.5rem;
+}
+
+.search-command-bar {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.25rem 0.5rem;
+  box-shadow: var(--shadow);
+  transition: border-color 0.2s, box-shadow 0.2s;
+  max-width: 800px;
+}
+
+.search-command-bar:focus-within {
+  border-color: #000;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+}
+
+.search-icon {
+  padding: 0 0.75rem;
+  color: #999;
+  display: flex;
+  align-items: center;
+}
+
+.search-command-bar input {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 0.8rem 0.5rem;
+  font-size: 0.95rem;
+  font-family: var(--font-body);
+  color: var(--black);
+}
+
+.filter-divider {
+  width: 1px;
+  height: 24px;
+  background: var(--border);
+  margin: 0 0.5rem;
+}
+
+.search-command-bar select {
+  border: none;
+  outline: none;
+  padding: 0.5rem 1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--gray);
+  background: transparent;
+  cursor: pointer;
+}
+
+/* Jobs Grid */
+.jobs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Modern Job Card */
+.job-card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  padding: 1.5rem;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow);
+}
+
+.job-card:hover {
+  transform: translateY(-3px);
+  border-color: #000;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.04);
+}
+
+.job-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.job-card h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--black);
+  margin-bottom: 0.25rem;
+}
+
+.job-company {
+  font-size: 0.8rem;
+  color: var(--gray);
+  font-weight: 500;
+}
+
+.job-meta {
+  display: flex;
+  gap: 1rem;
+  margin: 1rem 0;
+  font-size: 0.75rem;
+  color: var(--gray);
+}
+
+.job-meta span {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.job-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: auto;
+  padding-top: 1rem;
+}
+
+.job-tag {
+  background: #f5f5f5;
+  color: var(--gray);
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.job-salary {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #000;
+}
+
+/* Modal / Detail View (Vercel style overlay) */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(255,255,255,0.7);
+  backdrop-filter: blur(8px);
+  z-index: 2000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.modal-card {
+  background: #fff;
+  width: 100%;
+  max-width: 650px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.12);
+  padding: 2.5rem;
+  position: relative;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-close {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  background: #f5f5f5;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  color: #666;
+  transition: background 0.2s;
+}
+
+.modal-close:hover {
+  background: #000;
+  color: #fff;
+}
+
+@media (max-width: 768px) {
+  .search-command-bar { flex-direction: column; align-items: stretch; }
+  .filter-divider { display: none; }
+  .jobs-grid { grid-template-columns: 1fr; }
+}

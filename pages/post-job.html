@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Post Job – HoyJob</title>
+  <!-- Modern Font Stack -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/global.css">
+  <link rel="stylesheet" href="../css/dashboard.css">
+  <style>
+    .form-container {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    .form-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+      padding: 3rem;
+      box-shadow: var(--shadow);
+    }
+    .form-header {
+      margin-bottom: 2.5rem;
+      text-align: center;
+    }
+    .form-header h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      margin-bottom: 0.5rem;
+    }
+    .form-header p {
+      color: var(--gray);
+      font-size: 0.95rem;
+    }
+    .form-section-title {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05rem;
+      color: #999;
+      margin: 2rem 0 1rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .form-section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: #f0f0f0;
+    }
+    .input-wrapper {
+      position: relative;
+      margin-bottom: 1.5rem;
+    }
+    .input-wrapper label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #000;
+      margin-bottom: 0.5rem;
+    }
+    .input-wrapper input, .input-wrapper select, .input-wrapper textarea {
+      width: 100%;
+      background: #fafafa;
+      border: 1px solid #eee;
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-family: inherit;
+      font-size: 0.95rem;
+      transition: all 0.2s;
+    }
+    .input-wrapper input:focus, .input-wrapper select:focus, .input-wrapper textarea:focus {
+      background: #fff;
+      border-color: #000;
+      outline: none;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    }
+    .input-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+    .hint {
+      font-size: 0.75rem;
+      color: #999;
+      margin-top: 0.4rem;
+    }
+  </style>
+</head>
+<body>
+
+<nav class="site-nav"></nav>
+
+<div class="dash-layout">
+  <!-- Sidebar -->
+  <aside class="dash-sidebar" id="main-sidebar">
+    <!-- Populated by JS for Recruiter Consistency -->
+  </aside>
+
+  <!-- Main -->
+  <main class="dash-main">
+    <div class="form-container">
+      <div class="form-card">
+        <div class="form-header">
+          <h1>Create Job Listing</h1>
+          <p>Define the role and find your perfect matching candidate.</p>
+        </div>
+
+        <form id="post-job-form">
+          <div class="form-section-title">Core Information</div>
+          
+          <div class="input-wrapper">
+            <label for="job-title">Job Title</label>
+            <input type="text" id="job-title" placeholder="e.g. Senior Frontend Developer" required>
+            <div class="hint">Use a clear, descriptive title.</div>
+          </div>
+
+          <div class="input-grid">
+            <div class="input-wrapper">
+              <label for="job-location">Location</label>
+              <select id="job-location" required>
+                <option value="Mumbai">Mumbai</option>
+                <option value="Delhi">Delhi</option>
+                <option value="Bangalore">Bangalore</option>
+                <option value="Pune">Pune</option>
+                <option value="Hyderabad">Hyderabad</option>
+                <option value="Remote">Remote</option>
+              </select>
+            </div>
+            <div class="input-wrapper">
+              <label for="job-type">Employment Type</label>
+              <select id="job-type" required>
+                <option>Full-time</option>
+                <option>Part-time</option>
+                <option>Freelance</option>
+                <option>Contract</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-section-title">Compensation & Stats</div>
+          
+          <div class="input-grid">
+            <div class="input-wrapper">
+              <label for="job-experience">Experience Required</label>
+              <input type="text" id="job-experience" placeholder="e.g. 3-5 years" required>
+            </div>
+            <div class="input-wrapper">
+              <label for="job-salary">Expected Salary Range</label>
+              <input type="text" id="job-salary" placeholder="e.g. ₹40k–₹80k/mo" required>
+            </div>
+          </div>
+
+          <div class="input-wrapper">
+            <label for="job-skills">Technical Skills</label>
+            <input type="text" id="job-skills" placeholder="e.g. React, TypeScript, Node.js" required>
+            <div class="hint">Separate skills with commas. Our AI uses these for matching.</div>
+          </div>
+
+          <div class="form-section-title">Detailed Description</div>
+          
+          <div class="input-wrapper">
+            <label for="job-description">Role Overiew & Responsibilities</label>
+            <textarea id="job-description" rows="6" placeholder="What will they be doing? What makes this role unique?" required></textarea>
+          </div>
+
+          <div style="margin-top: 3rem;">
+            <button type="submit" class="btn btn-primary btn-lg" style="width: 100%; border-radius: 12px; font-weight: 700;">Publish Opportunity</button>
+            <p style="text-align: center; margin-top: 1rem; font-size: 0.8rem; color: #999;">By publishing, you agree to our recruitment guidelines.</p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="../js/global.js"></script>
+<script src="../js/jobs.js"></script>
+<script>
+  // Sidebar logic for Recruiters (Post-Job is a recruiter-only page)
+  document.addEventListener('DOMContentLoaded', () => {
+    const sidebar = document.getElementById('main-sidebar');
+    sidebar.innerHTML = `
+      <div class="sidebar-title">Management</div>
+      <a href="recruiter-dashboard.html"><span class="sidebar-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg></span> Console</a>
+      <a href="post-job.html" class="active"><span class="sidebar-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></span> Create Job</a>
+      <a href="jobs.html"><span class="sidebar-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></span> Talent Pool</a>
+      <a href="chat.html"><span class="sidebar-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></span> Messages</a>
+    `;
+  });
+</script>
+</body>
+</html>

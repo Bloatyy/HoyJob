@@ -202,9 +202,12 @@
 }
 
 .chat-user-meta h3 {
-  font-size: 1.1rem;
-  font-weight: 700;
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-weight: 800;
   margin-bottom: 0.15rem;
+  text-transform: uppercase;
+  letter-spacing: -0.04em;
 }
 
 .chat-user-meta .status-text {
@@ -246,7 +249,9 @@
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  background: linear-gradient(to bottom, #fff, #fefefe);
+  background: linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), url('../dash-main-texture.png');
+  background-size: cover;
+  background-attachment: fixed;
 }
 
 .message-node {

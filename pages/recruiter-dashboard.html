@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Recruiter Console – HoyJob</title>
   <!-- Modern Font Stack -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Sora:wght@300;400;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../css/global.css">
   <link rel="stylesheet" href="../css/dashboard.css">
 </head>
@@ -54,8 +54,8 @@
   <main class="dash-main">
     <div class="dash-header">
       <div>
-        <h1>Hiring Console</h1>
-        <p>Manage your active roles and candidate pipeline.</p>
+        <h1 id="recruiter-h1">Recruiter Console</h1>
+        <p>Orchestrating elite talent pipelines and active roles.</p>
       </div>
       <a href="post-job.html" class="btn btn-primary btn-sm">+ New Job Post</a>
     </div>
@@ -64,18 +64,18 @@
     <div class="stat-cards">
       <div class="stat-card accent">
         <span class="stat-card-label">Active Roles</span>
-        <div class="stat-card-num">6</div>
+        <div class="stat-card-num" id="stat-active-roles">0</div>
         <div style="font-size:0.7rem; color:#22c55e; margin-top:0.25rem;">Live and matching</div>
       </div>
       <div class="stat-card">
         <span class="stat-card-label">Total Candidates</span>
-        <div class="stat-card-num">42</div>
+        <div class="stat-card-num" id="stat-total-candidates">0</div>
         <div style="font-size:0.7rem; color:var(--gray); margin-top:0.25rem;">Across all roles</div>
       </div>
       <div class="stat-card">
         <span class="stat-card-label">Interviews Today</span>
-        <div class="stat-card-num">3</div>
-        <div class="match-badge" style="background:rgba(0,0,0,0.05);">Busy Schedule</div>
+        <div class="stat-card-num" id="stat-interviews-today">0</div>
+        <div class="match-badge" id="stat-interviews-badge" style="background:rgba(0,0,0,0.05);">Neutral</div>
       </div>
     </div>
 
@@ -87,6 +87,15 @@
     <div id="recent-jobs" style="display:grid; grid-template-columns: 1fr 1fr; gap:1.25rem; margin-bottom:3rem;"></div>
 
     <!-- Candidates -->
+    <div class="section-title">
+      <span>Pending Applications</span>
+      <span style="font-size:0.7rem; color:var(--gray); text-transform:none;">Candidates seeking alignment</span>
+    </div>
+    <div id="pending-apps" style="display:flex; flex-direction:column; gap:0.75rem; margin-bottom:3rem;">
+        <p style="color:#999; padding:1rem; font-size:0.9rem;">No pending applications.</p>
+    </div>
+
+    <!-- Recommendations -->
     <div class="section-title">
       <span>Top Recommendations</span>
     </div>

@@ -69,7 +69,7 @@
   background: #fff;
   border: 1px solid var(--border);
   border-radius: var(--radius-card);
-  padding: 1.5rem;
+  padding: 2.25rem;
   transition: all 0.2s ease;
   cursor: pointer;
   display: flex;
@@ -91,10 +91,13 @@
 }
 
 .job-card h3 {
-  font-size: 1.1rem;
-  font-weight: 600;
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-weight: 800;
   color: var(--black);
   margin-bottom: 0.25rem;
+  text-transform: uppercase;
+  letter-spacing: -0.04em;
 }
 
 .job-company {

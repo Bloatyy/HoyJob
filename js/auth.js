@@ -1,6 +1,6 @@
 // Auth JS — Login & Signup logic
 
-function handleLogin(e) {
+async function handleLogin(e) {
   e.preventDefault();
   const email = document.getElementById('login-email').value.trim();
   const password = document.getElementById('login-password').value;
@@ -10,19 +10,26 @@ function handleLogin(e) {
     return;
   }
 
-  // Simple simulation — accept any login
-  const role = document.querySelector('input[name="role"]:checked')?.value || 'agent';
-  const user = { email, name: email.split('@')[0], role, verified: true };
-  setUser(user);
+  try {
+    const data = await apiFetch('/auth/login', {
+      method: 'POST',
+      body: JSON.stringify({ email, password })
+    });
 
-  if (role === 'agent') {
-    window.location.href = 'agent-dashboard.html';
-  } else {
-    window.location.href = 'recruiter-dashboard.html';
+    setToken(data.token);
+    setUser(data.user);
+
+    if (data.user.role === 'agent') {
+      window.location.href = 'agent-dashboard.html';
+    } else {
+      window.location.href = 'recruiter-dashboard.html';
+    }
+  } catch (err) {
+    showError(err.message);
   }
 }
 
-function handleSignup(e) {
+async function handleSignup(e) {
   e.preventDefault();
   const name = document.getElementById('signup-name').value.trim();
   const email = document.getElementById('signup-email').value.trim();
@@ -34,13 +41,22 @@ function handleSignup(e) {
     return;
   }
 
-  const user = { name, email, role, verified: false };
-  setUser(user);
+  try {
+    const data = await apiFetch('/auth/signup', {
+      method: 'POST',
+      body: JSON.stringify({ name, email, password, role })
+    });
 
-  if (role === 'agent') {
-    window.location.href = 'agent-dashboard.html';
-  } else {
-    window.location.href = 'recruiter-dashboard.html';
+    setToken(data.token);
+    setUser(data.user);
+
+    if (data.user.role === 'agent') {
+      window.location.href = 'agent-dashboard.html';
+    } else {
+      window.location.href = 'recruiter-dashboard.html';
+    }
+  } catch (err) {
+    showError(err.message);
   }
 }
 

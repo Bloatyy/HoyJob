@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Account Settings – HoyJob</title>
   <!-- Modern Font Stack -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Sora:wght@300;400;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../css/global.css">
   <link rel="stylesheet" href="../css/dashboard.css">
   <style>
@@ -21,8 +21,9 @@
       box-shadow: var(--shadow);
     }
     .profile-hero {
-      background: var(--dark);
-      padding: 3rem;
+      background: linear-gradient(rgba(17,17,17,0.9), rgba(17,17,17,0.9)), url('../section-texture.png');
+      background-size: cover;
+      padding: 4rem 3rem;
       display: flex;
       align-items: center;
       gap: 2rem;
@@ -44,28 +45,34 @@
       border: 4px solid #fff;
     }
     .hero-info h1 {
-      font-size: 1.75rem;
-      margin-bottom: 0.25rem;
+      font-family: var(--font-heading);
+      font-size: 2.2rem;
+      font-weight: 800;
+      text-transform: uppercase;
       letter-spacing: -0.04em;
+      margin-bottom: 0.25rem;
     }
     .hero-info p {
       opacity: 0.6;
       font-size: 0.9rem;
     }
     .profile-body {
-      padding: 3rem;
+      padding: 4rem 3rem;
+      background: linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), url('../dash-main-texture.png');
+      background-size: cover;
     }
     .info-section {
-      margin-bottom: 3rem;
+      margin-bottom: 4rem;
     }
     .info-section:last-child { margin-bottom: 0; }
     .section-head {
-      font-size: 0.7rem;
-      font-weight: 700;
+      font-family: var(--font-heading);
+      font-size: 0.8rem;
+      font-weight: 800;
       text-transform: uppercase;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.1em;
       color: #999;
-      margin-bottom: 1.5rem;
+      margin-bottom: 2rem;
       display: flex;
       align-items: center;
       gap: 1rem;
@@ -116,7 +123,7 @@
       margin-bottom: 1rem;
       transition: all 0.2s;
     }
-    .doc-card:hover { boarder-color: #000; transform: translateY(-2px); }
+    .doc-card:hover { border-color: #000; transform: translateY(-2px); }
   </style>
 </head>
 <body>
@@ -138,12 +145,12 @@
             <h1 id="user-name">Loading...</h1>
             <p id="user-email">email@example.com</p>
             <div style="display:flex; gap:0.75rem; margin-top:1.25rem;">
-               <span class="badge-pill badge-hot" id="user-role">Agent</span>
-               <span class="badge-pill badge-new" style="background:rgba(255,255,255,0.1); color:#fff; border:1px solid rgba(255,255,255,0.2);">Verified ✓</span>
+               <span class="badge-pill badge-hot" id="user-role">Professional Associate</span>
+               <span class="badge-pill badge-new" style="background:rgba(255,255,255,0.1); color:#fff; border:1px solid rgba(255,255,255,0.2);">AUTHENTICATED ✓</span>
             </div>
           </div>
           <div style="margin-left: auto;">
-             <button class="btn btn-yellow btn-sm" style="border-radius:8px;">Edit Profile</button>
+             <button id="open-edit-modal" class="btn btn-yellow btn-sm" style="border-radius:8px;">Edit Profile</button>
           </div>
         </div>
 
@@ -153,8 +160,8 @@
             <div class="section-head">Personal Details</div>
             <div class="info-grid">
               <div class="data-point">
-                <span class="data-label">Organization / Full Name</span>
-                <span class="data-value" id="disp-name">—</span>
+                <span class="data-label">Organization</span>
+                <span class="data-value" id="disp-org">—</span>
               </div>
               <div class="data-point">
                 <span class="data-label">Primary Email Address</span>
@@ -162,50 +169,133 @@
               </div>
               <div class="data-point">
                 <span class="data-label">Work Location</span>
-                <span class="data-value" id="disp-loc">Mumbai, MH</span>
+                <span class="data-value" id="disp-loc">—</span>
               </div>
               <div class="data-point">
                 <span class="data-label">Professional Experience</span>
-                <span class="data-value" id="disp-exp">5+ Years</span>
+                <span class="data-value" id="disp-exp">—</span>
               </div>
             </div>
           </div>
 
-          <!-- Skills Cluster -->
           <div class="info-section">
             <div class="section-head">Skillset & Expertise</div>
-            <div id="skills-cloud">
-               <span class="profile-tag">Sales Strategy</span>
-               <span class="profile-tag">Contract Negotiation</span>
-               <span class="profile-tag">B2B Networking</span>
-               <span class="profile-tag">Field Operations</span>
-               <span class="profile-tag">CRM Mastery</span>
+            <div id="skills-cloud" style="display:flex; flex-wrap:wrap; gap:0.5rem;">
+               <!-- Dynamic Skills -->
+               <div style="color:#999; font-size:0.85rem;">No skills added yet.</div>
             </div>
           </div>
 
           <!-- Verification Vault -->
           <div class="info-section">
-            <div class="section-head">Verification Documents</div>
-            <div class="doc-card">
+            <div class="section-head">Credential Governance</div>
+            
+            <!-- Aadhaar Card -->
+            <div class="doc-card" id="doc-aadhaar">
               <div style="display:flex; align-items:center; gap:1rem;">
                 <span style="font-size:1.5rem;">🪪</span>
                 <div>
                   <div style="font-weight:600; font-size:0.9rem;">Identity Proof (Aadhaar)</div>
-                  <div style="font-size:0.75rem; color:#999;">Verified on April 12, 2026</div>
+                  <div id="aadhaar-status" style="font-size:0.75rem; color:#999;">Not uploaded</div>
                 </div>
               </div>
-              <span class="badge-pill" style="background:#22c55e20; color:#22c55e;">Secured</span>
+              <div style="display:flex; gap:0.5rem; align-items:center;">
+                <input type="file" id="upload-aadhaar" hidden accept="image/*,.pdf">
+                <button class="btn btn-sm" onclick="document.getElementById('upload-aadhaar').click()" style="background:#f5f5f5; border:1px solid #ddd; color:#000;">Upload</button>
+                <button id="view-aadhaar" class="btn btn-sm btn-yellow" style="display:none;">View</button>
+              </div>
             </div>
-            <div class="doc-card">
+
+            <!-- Certificate -->
+            <div class="doc-card" id="doc-cert">
               <div style="display:flex; align-items:center; gap:1rem;">
                 <span style="font-size:1.5rem;">📜</span>
                 <div>
                   <div style="font-weight:600; font-size:0.9rem;">Experience Certificate</div>
-                  <div style="font-size:0.75rem; color:#999;">Uploaded · Reviewing</div>
+                  <div id="cert-status" style="font-size:0.75rem; color:#999;">Not uploaded</div>
                 </div>
               </div>
-              <span class="badge-pill" style="background:#f5f5f5; color:#999;">Pending</span>
+              <div style="display:flex; gap:0.5rem; align-items:center;">
+                <input type="file" id="upload-cert" hidden accept="image/*,.pdf">
+                <button class="btn btn-sm" onclick="document.getElementById('upload-cert').click()" style="background:#f5f5f5; border:1px solid #ddd; color:#000;">Upload</button>
+                <button id="view-cert" class="btn btn-sm btn-yellow" style="display:none;">View</button>
+              </div>
             </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Edit Profile Modal -->
+      <div id="edit-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:1000; align-items:center; justify-content:center; backdrop-filter:blur(8px); padding:2rem;">
+        <div class="custom-scroll" style="background:#fff; width:100%; max-width:500px; max-height:90vh; overflow-y:auto; padding:2.5rem; border-radius:24px; box-shadow:0 25px 50px -12px rgba(0,0,0,0.5); position:relative;">
+          <style>
+            .custom-scroll::-webkit-scrollbar { width: 6px; }
+            .custom-scroll::-webkit-scrollbar-track { background: transparent; }
+            .custom-scroll::-webkit-scrollbar-thumb { background: #eee; border-radius: 10px; }
+            .custom-scroll::-webkit-scrollbar-thumb:hover { background: #ddd; }
+          </style>
+          <h2 style="margin-bottom:1.5rem; letter-spacing:-0.03em;">Edit Profile</h2>
+          <div style="display:grid; gap:1.25rem;">
+            <div>
+              <label style="display:block; font-size:0.8rem; font-weight:600; margin-bottom:0.4rem;">Full Name</label>
+              <input type="text" id="edit-name" style="width:100%; padding:0.8rem; border:1px solid #ddd; border-radius:12px;">
+            </div>
+            <div>
+              <label style="display:block; font-size:0.8rem; font-weight:600; margin-bottom:0.4rem;">Organization</label>
+              <input type="text" id="edit-org" style="width:100%; padding:0.8rem; border:1px solid #ddd; border-radius:12px;">
+            </div>
+            <div>
+              <label style="display:block; font-size:0.8rem; font-weight:600; margin-bottom:0.4rem;">Location</label>
+              <input type="text" id="edit-loc" style="width:100%; padding:0.8rem; border:1px solid #ddd; border-radius:12px;">
+            </div>
+            <div>
+              <label style="display:block; font-size:0.8rem; font-weight:600; margin-bottom:0.4rem;">Experience (Years)</label>
+              <input type="text" id="edit-exp" style="width:100%; padding:0.8rem; border:1px solid #ddd; border-radius:12px;">
+            </div>
+            <div>
+              <label style="display:block; font-size:0.8rem; font-weight:600; margin-bottom:0.4rem;">Professional Bio</label>
+              <textarea id="edit-bio" rows="2" style="width:100%; padding:0.8rem; border:1px solid #ddd; border-radius:12px; resize:none;"></textarea>
+            </div>
+            <!-- Role Specific Stats -->
+            <div id="agent-stats-fields" style="display:none; grid-template-columns:1fr 1fr 1fr; gap:1rem;">
+              <div>
+                <label style="display:block; font-size:0.7rem; font-weight:700; text-transform:uppercase; margin-bottom:0.4rem;">Apps Sent</label>
+                <input type="number" id="edit-apps" style="width:100%; padding:0.8rem; border:1px solid #ddd; border-radius:12px;">
+              </div>
+              <div>
+                <label style="display:block; font-size:0.7rem; font-weight:700; text-transform:uppercase; margin-bottom:0.4rem;">Interviews</label>
+                <input type="number" id="edit-interviews" style="width:100%; padding:0.8rem; border:1px solid #ddd; border-radius:12px;">
+              </div>
+              <div>
+                <label style="display:block; font-size:0.7rem; font-weight:700; text-transform:uppercase; margin-bottom:0.4rem;">Alignment Index</label>
+                <input type="number" id="edit-score" style="width:100%; padding:0.8rem; border:1px solid #ddd; border-radius:12px;">
+              </div>
+            </div>
+
+            <div id="recruiter-stats-fields" style="display:none; grid-template-columns:1fr 1fr 1fr; gap:1rem;">
+              <div>
+                <label style="display:block; font-size:0.7rem; font-weight:700; text-transform:uppercase; margin-bottom:0.4rem;">Active Roles</label>
+                <input type="number" id="edit-active-roles" style="width:100%; padding:0.8rem; border:1px solid #ddd; border-radius:12px;">
+              </div>
+              <div>
+                <label style="display:block; font-size:0.7rem; font-weight:700; text-transform:uppercase; margin-bottom:0.4rem;">Total Candidates</label>
+                <input type="number" id="edit-total-candidates" style="width:100%; padding:0.8rem; border:1px solid #ddd; border-radius:12px;">
+              </div>
+              <div>
+                <label style="display:block; font-size:0.7rem; font-weight:700; text-transform:uppercase; margin-bottom:0.4rem;">Interviews Today</label>
+                <input type="number" id="edit-interviews-today" style="width:100%; padding:0.8rem; border:1px solid #ddd; border-radius:12px;">
+              </div>
+            </div>
+            <div>
+              <label style="display:block; font-size:0.8rem; font-weight:600; margin-bottom:0.75rem;">Skills & Expertise (Select all that apply)</label>
+              <div id="skills-selector" style="display:flex; flex-wrap:wrap; gap:0.5rem; max-height:120px; overflow-y:auto; padding:0.5rem; border:1px solid #eee; border-radius:12px; background:#fafafa;">
+                <!-- Injected via profile.js -->
+              </div>
+            </div>
+          </div>
+          <div style="margin-top:2rem; display:flex; gap:1rem;">
+            <button id="save-profile" class="btn btn-yellow" style="flex:1;">Save Changes</button>
+            <button onclick="document.getElementById('edit-modal').style.display='none'" class="btn" style="flex:1; background:#f5f5f5;">Cancel</button>
           </div>
         </div>
       </div>

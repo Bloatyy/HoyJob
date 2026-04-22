@@ -3,10 +3,11 @@
 
 /* Sidebar - Refined #111 Dark Mode */
 .dash-sidebar { 
-  width: 260px; 
-  background: var(--dark); 
+  width: 280px; 
+  background: linear-gradient(rgba(17,17,17,0.9), rgba(17,17,17,0.9)), url('../section-texture.png');
+  background-size: cover;
   color: #fff; 
-  padding: 1.5rem 0; 
+  padding: 2rem 0; 
   flex-shrink: 0; 
   position: sticky; 
   top: 65px; 
@@ -40,10 +41,17 @@
 }
 
 /* Main Content */
-.dash-main { flex: 1; padding: 2.5rem 3rem; background: var(--bg); min-height: 100%; }
+.dash-main { 
+  flex: 1; 
+  padding: 3rem 4rem; 
+  background: linear-gradient(rgba(249,249,249,0.9), rgba(249,249,249,0.9)), url('../dash-main-texture.png');
+  background-size: cover;
+  background-attachment: fixed;
+  min-height: 100%; 
+}
 .dash-header { display: flex; justify-content: space-between; align-items: start; margin-bottom: 3rem; }
-.dash-header h1 { font-size: 1.5rem; font-weight: 600; margin-bottom: 0.25rem; }
-.dash-header p { font-size: 0.85rem; color: var(--gray); }
+.dash-header h1 { font-family: var(--font-heading); font-size: 2.5rem; font-weight: 800; text-transform: uppercase; letter-spacing: -0.05em; margin-bottom: 0.5rem; }
+.dash-header p { font-size: 1rem; color: var(--gray); font-weight: 400; }
 
 /* Stat Cards - Floating SaaS Style */
 .stat-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-bottom: 3rem; }
@@ -69,6 +77,7 @@
 .stat-card.accent .stat-card-num { 
   background: linear-gradient(135deg, #000 0%, #444 100%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   font-weight: 700;
 }
@@ -87,9 +96,12 @@
 
 /* Section Title */
 .section-title { 
-  font-size: 0.9rem; 
-  font-weight: 600; 
-  margin-bottom: 1.25rem; 
+  font-family: var(--font-heading);
+  font-size: 1.1rem; 
+  font-weight: 700; 
+  margin-bottom: 1.5rem; 
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
   display: flex; 
   align-items: center; 
   justify-content: space-between; 

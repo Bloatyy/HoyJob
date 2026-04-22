@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dashboard – HoyJob</title>
   <!-- Modern Font Stack -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Sora:wght@300;400;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../css/global.css">
   <link rel="stylesheet" href="../css/dashboard.css">
 </head>
@@ -48,7 +48,7 @@
   <main class="dash-main">
     <div class="dash-header">
       <div>
-        <h1>Welcome back, Ravi</h1>
+        <h1 id="welcome-title">Welcome back...</h1>
         <p>Here's what's happening with your applications today.</p>
       </div>
       <div class="toggle-container">
@@ -61,18 +61,18 @@
     <div class="stat-cards">
       <div class="stat-card">
         <span class="stat-card-label">Apps Sent</span>
-        <div class="stat-card-num">12</div>
-        <div style="font-size:0.7rem; color:#22c55e; margin-top:0.25rem;">+2 this week</div>
+        <div class="stat-card-num" id="stat-apps">0</div>
+        <div id="stat-apps-trend" style="font-size:0.7rem; color:#22c55e; margin-top:0.25rem;">+0 this week</div>
       </div>
       <div class="stat-card">
         <span class="stat-card-label">Interviews</span>
-        <div class="stat-card-num">3</div>
-        <div style="font-size:0.7rem; color:var(--gray); margin-top:0.25rem;">Next: Tomorrow</div>
+        <div class="stat-card-num" id="stat-interviews">0</div>
+        <div id="stat-interviews-next" style="font-size:0.7rem; color:var(--gray); margin-top:0.25rem;">No upcoming</div>
       </div>
       <div class="stat-card accent">
-        <span class="stat-card-label">Matching Score</span>
-        <div class="stat-card-num">85%</div>
-        <div class="match-badge">High Potential</div>
+        <span class="stat-card-label">Alignment Index</span>
+        <div class="stat-card-num" id="stat-score">0%</div>
+        <div class="match-badge" id="stat-score-label">Calculating...</div>
       </div>
     </div>
 

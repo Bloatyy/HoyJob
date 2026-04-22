@@ -13,15 +13,25 @@
   --light-gray: #f2f2f2;
   --shadow: 0 4px 12px rgba(0,0,0,0.03), 0 1px 4px rgba(0,0,0,0.02);
   --radius-pill: 999px;
-  --radius-card: 0.75rem; /* More precise, modern radius */
-  --radius-sm: 0.5rem;
-  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
-  --font-heading: 'Geist', 'Inter', sans-serif; /* Mimicking modern SaaS stacks */
+  --radius-card: 1.5rem; /* Larger, more modern radius */
+  --radius-sm: 0.75rem;
+  --font-body: 'Sora', 'Public Sans', system-ui, sans-serif;
+  --font-heading: 'Bricolage Grotesque', sans-serif; 
 }
 
 /* ===== TYPOGRAPHY ===== */
-body { font-family: var(--font-body); background: var(--bg); color: var(--black); -webkit-font-smoothing: antialiased; }
-h1, h2, h3, h4 { font-family: var(--font-heading); font-weight: 600; letter-spacing: -0.02em; } /* Tighter letter spacing */
+body { font-family: var(--font-body); background: var(--bg); color: var(--black); -webkit-font-smoothing: antialiased; position: relative; }
+body::after {
+  content: "";
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: url('https://grainy-gradients.vercel.app/noise.svg');
+  opacity: 0.05;
+  pointer-events: none;
+  z-index: 9999;
+  filter: contrast(150%) brightness(1000%);
+}
+h1, h2, h3, h4 { font-family: var(--font-heading); font-weight: 600; letter-spacing: -0.02em; } 
 a { color: inherit; text-decoration: none; transition: color 0.1s ease; }
 
 /* ===== LAYOUT ===== */
@@ -41,13 +51,42 @@ a { color: inherit; text-decoration: none; transition: color 0.1s ease; }
 }
 .site-nav .logo { 
   font-family: var(--font-heading); 
-  font-weight: 800; /* ExtraBold */
+  font-weight: 800;
   font-size: 1.15rem; 
-  letter-spacing: -0.04em; /* tracking-tighter */
+  letter-spacing: -0.04em;
   color: #000; 
   display: flex; 
   align-items: center; 
-  gap: 0.6rem; 
+}
+.logo-oval {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--yellow);
+  padding: 0.4rem 1.25rem 0.4rem 0.5rem;
+  border-radius: 2rem;
+  box-shadow: 0 4px 15px rgba(239, 255, 0, 0.25);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.logo-oval:hover {
+  transform: translateY(-1px) scale(1.02);
+  box-shadow: 0 6px 20px rgba(239, 255, 0, 0.4);
+}
+.logo-h {
+  background: #000;
+  color: var(--yellow);
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 0.85rem;
+  flex-shrink: 0;
+}
+.logo-oval span {
+  margin-top: -1px; /* Optical alignment for Bricolage */
 }
 .site-nav .nav-links { 
   display: flex; 
@@ -181,6 +220,21 @@ textarea.form-input { resize: vertical; min-height: 100px; }
 
 /* ===== PAGE WRAPPER (for pages with sidebar) ===== */
 .page-body { padding-top: 70px; }
+
+/* ===== ANIMATIONS ===== */
+@keyframes reveal {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+.reveal { animation: reveal 0.8s cubic-bezier(0.23, 1, 0.32, 1) forwards; }
+.hero h1 { animation: reveal 1s cubic-bezier(0.23, 1, 0.32, 1) both; }
+.hero p { animation: reveal 1s cubic-bezier(0.23, 1, 0.32, 1) 0.2s both; }
+.btn-group { animation: reveal 1s cubic-bezier(0.23, 1, 0.32, 1) 0.4s both; }
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {

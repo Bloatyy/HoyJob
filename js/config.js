@@ -10,8 +10,8 @@ const CONFIG = {
   },
   production: {
     // Replace this with your actual production backend URL after deployment
-    API_BASE: 'https://hoyjob-api.onrender.com/api', 
-    SOCKET_URL: 'https://hoyjob-api.onrender.com'
+    API_BASE: 'https://hoyjob-backend.onrender.com/api', 
+    SOCKET_URL: 'https://hoyjob-backend.onrender.com'
   }
 };
 

@@ -19,15 +19,15 @@ const server = http.createServer(app);
 
 // Production CORS Configuration
 const allowedOrigins = [
-  process.env.FRONTEND_URL || 'http://localhost:5500',
-  'https://your-production-domain.com' // Placeholder for user
-];
+  process.env.FRONTEND_URL,
+  'http://localhost:5500',
+  'http://127.0.0.1:5500',
+  'http://localhost:3000'
+].filter(Boolean);
 
 const corsOptions = {
   origin: function (origin, callback) {
-    // Allow requests with no origin (like mobile apps or curl requests)
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) !== -1 || process.env.NODE_ENV === 'development') {
+    if (!origin || allowedOrigins.includes(origin) || process.env.NODE_ENV !== 'production') {
       callback(null, true);
     } else {
       callback(new Error('Not allowed by CORS'));
@@ -38,13 +38,13 @@ const corsOptions = {
 
 const io = socketIo(server, {
   cors: {
-    origin: process.env.NODE_ENV === 'production' ? process.env.FRONTEND_URL : "*",
+    origin: "*", // More flexible for initial deployment
     methods: ["GET", "POST"]
   }
 });
 
 app.use(helmet({
-  contentSecurityPolicy: false, // Disable if you're serving images from other domains
+  contentSecurityPolicy: false,
 }));
 app.use(compression());
 app.use(cors(corsOptions));
@@ -53,21 +53,24 @@ app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 // Health Check
 app.get('/health', (req, res) => {
-  res.status(200).json({ status: 'ok', uptime: process.uptime() });
+  res.status(200).json({ 
+    status: 'ok', 
+    db: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected',
+    uptime: process.uptime() 
+  });
 });
 
 // MongoDB Connection
 const MONGO_URI = process.env.MONGO_URI;
 if (!MONGO_URI) {
-  console.error('CRITICAL: MONGO_URI is not defined in environment variables.');
-  process.exit(1);
+  console.error('CRITICAL: MONGO_URI is not defined.');
 }
 
 mongoose.connect(MONGO_URI)
   .then(() => console.log('MongoDB Connected Successfully'))
   .catch(err => {
     console.error('MongoDB Connection Error:', err);
-    process.exit(1);
+    // Don't exit(1) immediately to allow Render to stay "alive" for debugging
   });
 
 // API Routes

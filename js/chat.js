@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const user = getUser();
   const currentUserId = user._id || user.id;
-  const socket = io('http://localhost:5000');
+  const socket = io(window.HJ_CONFIG ? window.HJ_CONFIG.SOCKET_URL : 'http://localhost:5000');
   
   let activeContact = null;
   let allOtherUsers = [];

@@ -2,13 +2,13 @@ document.addEventListener('DOMContentLoaded', async () => {
   const jobsGrid = document.querySelector('.jobs-grid');
   const user = getUser();
   const userRole = user ? user.role : 'agent';
-  
+
   // Dynamic Header for Recruiters
   if (userRole === 'recruiter') {
     const headerTitle = document.querySelector('.dash-header h1');
     const headerDesc = document.querySelector('.dash-header p');
     const searchInput = document.getElementById('search-input');
-    
+
     if (headerTitle) headerTitle.textContent = 'Talent Pool';
     if (headerDesc) headerDesc.textContent = 'Discover and connect with top-tier verified agents and specialists.';
     if (searchInput) searchInput.placeholder = 'Search by name, expertise, or skills...';
@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   async function loadMarketplace() {
     if (!jobsGrid) return;
     jobsGrid.innerHTML = `<div class="loading">Finding ${userRole === 'recruiter' ? 'talent' : 'opportunities'}...</div>`;
-    
+
     try {
       if (userRole === 'recruiter') {
         const allUsers = await apiFetch('/users');
@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   function renderGrid(data) {
     if (!jobsGrid) return;
     jobsGrid.innerHTML = '';
-    
+
     if (data.length === 0) {
       jobsGrid.innerHTML = `<div class="empty">No ${userRole === 'recruiter' ? 'candidates' : 'jobs'} found for your search.</div>`;
       return;
@@ -45,11 +45,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     data.forEach(item => {
       const card = document.createElement('div');
       card.className = 'job-card';
-      
+
       if (userRole === 'recruiter') {
         const name = item.name && item.name.toLowerCase() !== 'google' ? item.name : item.email.split('@')[0];
         const initials = name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
-        
+
         // Handle skills (could be array or comma string)
         let skillsArr = [];
         if (Array.isArray(item.skills)) skillsArr = item.skills;
@@ -57,11 +57,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         const expText = item.experience ? `${item.experience} YOE` : '';
         const orgText = item.organization ? `@ ${item.organization}` : '';
-        
+
         // Format Bio as bullet points
         const bioText = item.bio || 'Professional Agent specialized in strategic operations and technical implementation.';
         const bioBullets = bioText.split(/[.\n]/).filter(s => s.trim().length > 0).slice(0, 3);
-        
+
         card.innerHTML = `
           <div class="job-card-header" style="margin-bottom: 1.5rem;">
             <div style="display:flex; align-items:center; gap:1rem;">
@@ -89,9 +89,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
           <div style="margin-top: auto;">
             <div style="margin-bottom: 1.5rem; display:flex; flex-wrap:wrap; gap:0.35rem;">
-              ${skillsArr.length > 0 
-                ? skillsArr.map(s => `<span style="background: rgba(239, 255, 0, 0.1); color: #888800; padding: 4px 10px; border-radius: 6px; font-size: 0.65rem; font-weight: 700; border: 1px solid rgba(239, 255, 0, 0.2);">${s}</span>`).join('') 
-                : '<span style="font-size:0.7rem; color:#999;">Generalist</span>'}
+              ${skillsArr.length > 0
+            ? skillsArr.map(s => `<span style="background: rgba(239, 255, 0, 0.1); color: #888800; padding: 4px 10px; border-radius: 6px; font-size: 0.65rem; font-weight: 700; border: 1px solid rgba(239, 255, 0, 0.2);">${s}</span>`).join('')
+            : '<span style="font-size:0.7rem; color:#999;">Generalist</span>'}
             </div>
             
             <div style="display:flex; justify-content:space-between; align-items:center; padding-top: 1.25rem; border-top: 1px solid #f5f5f5;">
@@ -105,7 +105,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       } else {
         const companyName = item.company || 'HoyJob Partner';
         const initials = companyName.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
-        
+
         // Format Description as bullet points
         const descText = item.description || 'Modern role focused on high-impact delivery and innovative problem solving at ' + companyName;
         const descBullets = descText.split(/[.\n]/).filter(s => s.trim().length > 0).slice(0, 3);
@@ -161,12 +161,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     const loc = filterLocation ? filterLocation.value.toLowerCase() : '';
 
     const filtered = allData.filter(item => {
-      const matchSearch = userRole === 'recruiter' 
+      const matchSearch = userRole === 'recruiter'
         ? (item.name || '').toLowerCase().includes(term) || (item.email || '').toLowerCase().includes(term) || (item.skills || '').toLowerCase().includes(term)
         : (item.title || '').toLowerCase().includes(term) || (item.company || '').toLowerCase().includes(term) || (item.description || '').toLowerCase().includes(term);
-      
+
       const matchLoc = !loc || (item.location || '').toLowerCase().includes(loc);
-      
+
       return matchSearch && matchLoc;
     });
 
@@ -181,7 +181,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       window.location.href = 'login.html';
       return;
     }
-    
+
     try {
       await apiFetch(`/applications/apply/${jobId}`, { method: 'POST' });
       alert('Application submitted successfully!');

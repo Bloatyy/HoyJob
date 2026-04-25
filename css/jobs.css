@@ -19,7 +19,7 @@
 
 .search-command-bar:focus-within {
   border-color: #000;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
 }
 
 .search-icon {
@@ -80,7 +80,7 @@
 .job-card:hover {
   transform: translateY(-3px);
   border-color: #000;
-  box-shadow: 0 12px 40px rgba(0,0,0,0.04);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.04);
 }
 
 .job-card-top {
@@ -147,7 +147,7 @@
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(255,255,255,0.7);
+  background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(8px);
   z-index: 2000;
   display: none;
@@ -162,7 +162,7 @@
   max-width: 650px;
   border: 1px solid var(--border);
   border-radius: 12px;
-  box-shadow: 0 30px 60px rgba(0,0,0,0.12);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12);
   padding: 2.5rem;
   position: relative;
   max-height: 90vh;
@@ -193,7 +193,16 @@
 }
 
 @media (max-width: 768px) {
-  .search-command-bar { flex-direction: column; align-items: stretch; }
-  .filter-divider { display: none; }
-  .jobs-grid { grid-template-columns: 1fr; }
+  .search-command-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filter-divider {
+    display: none;
+  }
+
+  .jobs-grid {
+    grid-template-columns: 1fr;
+  }
 }

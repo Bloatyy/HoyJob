@@ -2,7 +2,8 @@
    GLOBAL JS — Auth helpers, api helpers, nav
    ============================================ */
 
-const API_BASE = 'http://localhost:5000/api';
+// --- Environment Configuration ---
+const API_BASE = window.HJ_CONFIG ? window.HJ_CONFIG.API_BASE : 'http://localhost:5000/api';
 
 // --- Auth Helpers ---
 function getToken() {
@@ -78,6 +79,8 @@ function buildNav() {
   if (!nav) return;
 
   const path = window.location.pathname;
+  const hash = window.location.hash;
+  const isIndex = path.includes('index.html') || path.endsWith('/') || path === '';
 
   if (!user) {
     nav.innerHTML = `
@@ -88,8 +91,8 @@ function buildNav() {
         </div>
       </a>
       <div class="nav-links">
-        <a href="${base}index.html#about" class="${path.includes('index.html') ? 'active' : ''}">About</a>
-        <a href="${base}index.html#how">How it Works</a>
+        <a href="${base}index.html#about" class="${isIndex && (hash === '#about' || !hash) ? 'active' : ''}">About</a>
+        <a href="${base}index.html#how" class="${isIndex && hash === '#how' ? 'active' : ''}">How it Works</a>
         <a href="${base}pages/jobs.html" class="${path.includes('jobs.html') ? 'active' : ''}">Marketplace</a>
       </div>
       <div class="nav-actions">
@@ -125,3 +128,5 @@ function buildNav() {
 document.addEventListener('DOMContentLoaded', () => {
   buildNav();
 });
+
+window.addEventListener('hashchange', buildNav);

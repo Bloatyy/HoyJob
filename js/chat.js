@@ -147,8 +147,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   function sendMessage(text = '', imageUrl = '') {
     const msgText = text || messageInput.value.trim();
-    if ((!msgText && !imageUrl) || !activeContact) return;
+    if ((!msgText && !imageUrl) || !activeContact) {
+      console.warn('Cannot send message: empty text or no active contact');
+      return;
+    }
     const contactId = activeContact._id || activeContact.id;
+    console.log('Emitting sendMessage:', { senderId: currentUserId, receiverId: contactId, text: msgText });
     socket.emit('sendMessage', { senderId: currentUserId, receiverId: contactId, text: msgText, imageUrl: imageUrl });
     messageInput.value = '';
   }

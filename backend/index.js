@@ -106,7 +106,12 @@ io.on('connection', (socket) => {
 
   socket.on('sendMessage', async (data) => {
     const { senderId, receiverId, text, imageUrl } = data;
-    if (!senderId || !receiverId || (!text && !imageUrl)) return;
+    console.log(`Socket: Attempting to send message from ${senderId} to ${receiverId}`);
+
+    if (!senderId || !receiverId || (!text && !imageUrl)) {
+      console.warn('Socket: Invalid message data received');
+      return socket.emit('messageError', { error: 'Invalid message data' });
+    }
     
     try {
       const newMessage = new Message({ 
@@ -116,15 +121,18 @@ io.on('connection', (socket) => {
         imageUrl: imageUrl || '' 
       });
       await newMessage.save();
+      console.log('Socket: Message saved to DB');
 
       const receiverSocketId = users[receiverId];
       if (receiverSocketId) {
         io.to(receiverSocketId).emit('newMessage', newMessage);
+        console.log(`Socket: Message forwarded to receiver socket ${receiverSocketId}`);
       }
       
       socket.emit('messageSent', newMessage);
     } catch (err) {
       console.error('Socket sendMessage error:', err);
+      socket.emit('messageError', { error: 'Failed to save message', details: err.message });
     }
   });
 

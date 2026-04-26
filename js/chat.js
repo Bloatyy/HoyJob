@@ -18,8 +18,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   const messagesScroller = document.querySelector('.messages-scroller');
   const chatHeaderName = document.querySelector('.chat-user-meta h3');
   const chatHeaderAvatar = document.querySelector('.chat-user-info .avatar');
-  const messageInput = document.querySelector('.floating-input input');
+  const messageInput = document.querySelector('.floating-input input[type="text"]');
   const sendBtn = document.querySelector('.send-trigger');
+  const chatHeaderStatus = document.querySelector('.chat-user-meta .status-text');
   
   const searchInput = document.getElementById('search-conversations');
   const attachmentTrigger = document.getElementById('attachment-trigger');
@@ -94,6 +95,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     if (chatHeaderName) chatHeaderName.textContent = displayName;
     if (chatHeaderAvatar) chatHeaderAvatar.textContent = initials || '?';
+    if (chatHeaderStatus) chatHeaderStatus.textContent = 'Active Channel';
     
     document.querySelectorAll('.contact-item').forEach(i => {
        i.classList.remove('active');

@@ -94,4 +94,50 @@ document.addEventListener('DOMContentLoaded', () => {
       player.setVolume(e.target.value);
     });
   }
+  // Newsletter Submission
+  const newsletterBtn = document.querySelector('.btn-submit');
+  const successModal = document.getElementById('successModal');
+  const successCloseBtns = document.querySelectorAll('.success-modal-close');
+
+  if (newsletterBtn) {
+    newsletterBtn.addEventListener('click', () => {
+      const emailInput = document.getElementById('email');
+      const subscribeCheckbox = document.getElementById('subscribe');
+      
+      if (!emailInput.value) {
+        alert('Please enter your email.');
+        return;
+      }
+      if (!subscribeCheckbox.checked) {
+        alert('Please agree to subscribe.');
+        return;
+      }
+
+      // Show success modal
+      if (successModal) {
+        successModal.classList.add('active');
+      }
+
+      // Reset form
+      emailInput.value = '';
+      subscribeCheckbox.checked = false;
+    });
+  }
+
+  if (successCloseBtns) {
+    successCloseBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        successModal.classList.remove('active');
+      });
+    });
+  }
+
+  // Close success modal on backdrop click
+  if (successModal) {
+    successModal.addEventListener('click', (e) => {
+      if (e.target === successModal) {
+        successModal.classList.remove('active');
+      }
+    });
+  }
 });

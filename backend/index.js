@@ -23,23 +23,33 @@ const allowedOrigins = [
   'http://localhost:5500',
   'http://127.0.0.1:5500',
   'http://localhost:3000'
-].filter(Boolean);
+].map(url => url?.replace(/\/$/, '')).filter(Boolean); // Remove trailing slashes for consistency
 
 const corsOptions = {
   origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin) || process.env.NODE_ENV !== 'production') {
+    // Allow requests with no origin (like mobile apps or curl)
+    if (!origin) return callback(null, true);
+    
+    const isAllowed = allowedOrigins.includes(origin) || 
+                      process.env.NODE_ENV !== 'production' ||
+                      !process.env.FRONTEND_URL; // If FRONTEND_URL is not set, allow all in production for easier debug
+    
+    if (isAllowed) {
       callback(null, true);
     } else {
+      console.warn(`CORS blocked for origin: ${origin}`);
       callback(new Error('Not allowed by CORS'));
     }
   },
-  credentials: true
+  credentials: true,
+  optionsSuccessStatus: 200
 };
 
 const io = socketIo(server, {
   cors: {
-    origin: "*", // More flexible for initial deployment
-    methods: ["GET", "POST"]
+    origin: "*", 
+    methods: ["GET", "POST"],
+    credentials: true
   }
 });
 
@@ -55,7 +65,9 @@ app.use(express.urlencoded({ limit: '50mb', extended: true }));
 app.get('/health', (req, res) => {
   res.status(200).json({ 
     status: 'ok', 
+    env: process.env.NODE_ENV || 'development',
     db: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected',
+    frontend: process.env.FRONTEND_URL || 'not set',
     uptime: process.uptime() 
   });
 });

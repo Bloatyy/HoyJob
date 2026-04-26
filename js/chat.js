@@ -3,7 +3,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const user = getUser();
   const currentUserId = user._id || user.id;
-  const socket = io(window.HJ_CONFIG ? window.HJ_CONFIG.SOCKET_URL : 'http://localhost:5000');
+  const socket = io(window.HJ_CONFIG ? window.HJ_CONFIG.SOCKET_URL : 'http://localhost:5000', {
+    transports: ['websocket', 'polling'] // Force websocket with polling fallback
+  });
+
+  socket.on('connect', () => console.log('✅ Chat Socket Connected:', socket.id));
+  socket.on('connect_error', (err) => console.error('❌ Chat Socket Error:', err));
+  socket.on('disconnect', (reason) => console.warn('⚠️ Chat Socket Disconnected:', reason));
   
   let activeContact = null;
   let allOtherUsers = [];

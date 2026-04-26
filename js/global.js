@@ -52,14 +52,27 @@ async function apiFetch(endpoint, options = {}) {
     ...options.headers
   };
 
-  const response = await fetch(url, { ...options, headers });
-  const data = await response.json();
+  try {
+    const response = await fetch(url, { ...options, headers });
+    
+    // Check if response is JSON
+    const contentType = response.headers.get('content-type');
+    let data;
+    if (contentType && contentType.includes('application/json')) {
+      data = await response.json();
+    } else {
+      data = { msg: await response.text() };
+    }
 
-  if (!response.ok) {
-    throw new Error(data.msg || data.error || 'Something went wrong');
+    if (!response.ok) {
+      throw new Error(data.msg || data.error || `HTTP Error ${response.status}`);
+    }
+
+    return data;
+  } catch (err) {
+    console.error(`Fetch error at ${endpoint}:`, err);
+    throw err;
   }
-
-  return data;
 }
 
 // --- Path helpers ---

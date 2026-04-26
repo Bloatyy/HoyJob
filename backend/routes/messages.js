@@ -17,7 +17,8 @@ router.get('/:user1/:user2', auth, async (req, res) => {
     }).sort({ timestamp: 1 });
     res.json(messages);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    console.error('Fetch Messages Error:', err.message);
+    res.status(500).json({ error: 'Server Error', details: err.message });
   }
 });
 

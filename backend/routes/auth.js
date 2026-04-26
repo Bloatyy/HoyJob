@@ -21,7 +21,8 @@ router.post('/signup', async (req, res) => {
       res.json({ token, user: { id: user.id, name: user.name, email: user.email, role: user.role } });
     });
   } catch (err) {
-    res.status(500).send('Server error');
+    console.error('Signup Error:', err.message);
+    res.status(500).json({ error: 'Server error', details: err.message });
   }
 });
 
@@ -42,7 +43,8 @@ router.post('/login', async (req, res) => {
       res.json({ token, user: { id: user.id, name: user.name, email: user.email, role: user.role, bio: user.bio } });
     });
   } catch (err) {
-    res.status(500).send('Server error');
+    console.error('Login Error:', err.message);
+    res.status(500).json({ error: 'Server error', details: err.message });
   }
 });
 
@@ -53,7 +55,8 @@ router.get('/me', auth, async (req, res) => {
     const user = await User.findById(req.user.id).select('-password');
     res.json(user);
   } catch (err) {
-    res.status(500).send('Server error');
+    console.error('Me Error:', err.message);
+    res.status(500).json({ error: 'Server error', details: err.message });
   }
 });
 

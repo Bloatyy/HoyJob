@@ -11,7 +11,8 @@ router.get('/', auth, async (req, res) => {
       .select('name email role bio organization location experience skills createdAt');
     res.json(users);
   } catch (err) {
-    res.status(500).send('Server Error');
+    console.error('Get Users Error:', err.message);
+    res.status(500).json({ error: 'Server Error', details: err.message });
   }
 });
 
@@ -41,7 +42,8 @@ router.put('/profile', auth, async (req, res) => {
     await user.save();
     res.json(user);
   } catch (err) {
-    res.status(500).send('Server Error');
+    console.error('Update Profile Error:', err.message);
+    res.status(500).json({ error: 'Server Error', details: err.message });
   }
 });
 

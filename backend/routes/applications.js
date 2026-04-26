@@ -53,8 +53,8 @@ router.post('/apply/:jobId', auth, async (req, res) => {
 
     res.json({ ...newApp.toObject(), matchScore });
   } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server Error');
+    console.error('Apply Job Error:', err.message);
+    res.status(500).json({ error: 'Server Error', details: err.message });
   }
 });
 
@@ -78,7 +78,8 @@ router.get('/my', auth, async (req, res) => {
       .sort({ createdAt: -1 });
     res.json(apps);
   } catch (err) {
-    res.status(500).send('Server Error');
+    console.error('Fetch My Apps Error:', err.message);
+    res.status(500).json({ error: 'Server Error', details: err.message });
   }
 });
 
@@ -108,7 +109,8 @@ router.put('/:id/status', auth, async (req, res) => {
 
     res.json(app);
   } catch (err) {
-    res.status(500).send('Server Error');
+    console.error('Update App Status Error:', err.message);
+    res.status(500).json({ error: 'Server Error', details: err.message });
   }
 });
 

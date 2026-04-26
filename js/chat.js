@@ -35,30 +35,33 @@ document.addEventListener('DOMContentLoaded', async () => {
     try {
       const allUsers = await apiFetch('/users');
       allOtherUsers = allUsers.filter(u => (u._id || u.id) !== currentUserId);
+      
+      if (allOtherUsers.length === 0) {
+        contactsList.innerHTML = '<div style="padding:1.5rem; text-align:center; color:#999; font-size:0.8rem;">No other users found. Invite someone to start chatting!</div>';
+        return;
+      }
+
       renderContacts(allOtherUsers);
 
-      // Deep Linking: Auto-select user from URL parameter
+      // Deep Linking or Auto-select
       const urlParams = new URLSearchParams(window.location.search);
       const deepLinkUserId = urlParams.get('userId');
       if (deepLinkUserId) {
         const contactToSelect = allOtherUsers.find(u => (u._id || u.id) === deepLinkUserId);
         if (contactToSelect) selectContact(contactToSelect);
+      } else if (allOtherUsers.length > 0) {
+        // Optional: Auto-select first contact if no one is selected
+        // selectContact(allOtherUsers[0]); 
       }
     } catch (err) {
       console.error(err);
-      contactsList.innerHTML = '<div style="padding:1rem; color:red; text-align:center;">Failed to load contacts.</div>';
+      contactsList.innerHTML = '<div style="padding:1.5rem; text-align:center; color:red; font-size:0.8rem;">Failed to load contacts.</div>';
     }
   }
 
-  function renderContacts(usersToRender) {
+  function renderContacts(users) {
     contactsList.innerHTML = '';
-    
-    if (usersToRender.length === 0) {
-      contactsList.innerHTML = '<div style="padding:1.5rem; text-align:center; color:#999; font-size:0.8rem;">No contacts found.</div>';
-      return;
-    }
-
-    usersToRender.forEach(contact => {
+    users.forEach(contact => {
       const contactId = contact._id || contact.id;
       const displayName = contact.name && contact.name.toLowerCase() !== 'google' ? contact.name : contact.email.split('@')[0];
       const initials = displayName.split(' ').filter(n => n).map(n => n[0]).join('').toUpperCase().substring(0, 2);
@@ -103,34 +106,31 @@ document.addEventListener('DOMContentLoaded', async () => {
     try {
       const messages = await apiFetch(`/messages/${currentUserId}/${contactId}`);
       renderMessages(messages);
-    } catch (err) { 
-        console.error(err);
-        messagesScroller.innerHTML = '<div style="padding:2rem; text-align:center; color:#ff4444;">Failed to sync messages.</div>'; 
+    } catch (err) {
+      console.error(err);
+      messagesScroller.innerHTML = '<div style="padding:2rem; text-align:center; color:red; font-size:0.8rem;">Failed to load chat history.</div>';
     }
   }
 
   function renderMessages(messages) {
     messagesScroller.innerHTML = '';
-    if (!messages || messages.length === 0) {
-      messagesScroller.innerHTML = '<div style="padding:3rem; text-align:center; color:#bbb; font-size:0.85rem;">No history found. Ready to chat?</div>';
-    } else {
-      messages.forEach(msg => addMessageToUI(msg));
+    if (messages.length === 0) {
+      messagesScroller.innerHTML = '<div style="padding:4rem 2rem; text-align:center; color:#999; font-size:0.85rem;">No messages yet. Send a greeting to start the conversation!</div>';
+      return;
     }
-    scrollToBottom();
+    messages.forEach(addMessageToUI);
   }
 
   function addMessageToUI(msg) {
     const senderId = typeof msg.sender === 'object' ? (msg.sender._id || msg.sender.id) : msg.sender;
-    const isSent = senderId === currentUserId;
-    const node = document.createElement('div');
-    node.className = `message-node ${isSent ? 'sent' : 'received'}`;
+    const isMe = senderId === currentUserId;
     
-    let contentHtml = '';
+    const node = document.createElement('div');
+    node.className = `message ${isMe ? 'me' : 'them'}`;
+    
+    let contentHtml = `<p>${msg.text}</p>`;
     if (msg.imageUrl) {
-      contentHtml += `<img src="${msg.imageUrl}" style="max-width: 100%; border-radius: 8px; margin-bottom: 0.5rem; display: block;">`;
-    }
-    if (msg.text) {
-      contentHtml += `<div>${msg.text}</div>`;
+      contentHtml += `<img src="${msg.imageUrl}" style="max-width:200px; border-radius:8px; margin-top:0.5rem; display:block;">`;
     }
 
     node.innerHTML = `
@@ -147,10 +147,17 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   function sendMessage(text = '', imageUrl = '') {
     const msgText = text || messageInput.value.trim();
-    if ((!msgText && !imageUrl) || !activeContact) {
-      console.warn('Cannot send message: empty text or no active contact');
+    
+    if (!activeContact) {
+      alert('Please select a contact from the sidebar first.');
+      console.warn('Cannot send message: no active contact selected');
       return;
     }
+    
+    if (!msgText && !imageUrl) {
+      return; // Do nothing for completely empty messages
+    }
+    
     const contactId = activeContact._id || activeContact.id;
     console.log('Emitting sendMessage:', { senderId: currentUserId, receiverId: contactId, text: msgText });
     socket.emit('sendMessage', { senderId: currentUserId, receiverId: contactId, text: msgText, imageUrl: imageUrl });
@@ -164,45 +171,59 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (searchInput) {
     searchInput.oninput = (e) => {
       const term = e.target.value.toLowerCase();
-      const filtered = allOtherUsers.filter(u => {
-        const name = (u.name || '').toLowerCase();
-        const email = (u.email || '').toLowerCase();
-        return name.includes(term) || email.includes(term);
-      });
+      const filtered = allOtherUsers.filter(u => 
+        (u.name && u.name.toLowerCase().includes(term)) || 
+        (u.email && u.email.toLowerCase().includes(term))
+      );
       renderContacts(filtered);
     };
   }
 
-  // Upload Logic
-  if (attachmentTrigger && photoUpload) {
-    attachmentTrigger.onclick = () => photoUpload.click();
-    
-    photoUpload.onchange = (e) => {
+  // Upload Photo
+  if (attachmentTrigger) attachmentTrigger.onclick = () => photoUpload.click();
+  if (photoUpload) {
+    photoUpload.onchange = async (e) => {
       const file = e.target.files[0];
       if (!file) return;
-
-      if (!file.type.startsWith('image/')) {
-        alert('Please upload an image file.');
-        return;
+      
+      const formData = new FormData();
+      formData.append('image', file);
+      
+      try {
+        const res = await apiFetch('/messages/upload', {
+          method: 'POST',
+          body: formData,
+          headers: {} // apiFetch will handle it if we pass body as FormData
+        });
+        sendMessage('', res.imageUrl);
+      } catch (err) {
+        alert('Image upload failed');
+        console.error(err);
       }
-
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        sendMessage('', event.target.result); // Send Base64 immediately
-        photoUpload.value = ''; // Reset input
-      };
-      reader.readAsDataURL(file);
     };
   }
 
   socket.on('newMessage', (msg) => {
+    console.log('Incoming newMessage:', msg);
     const senderId = typeof msg.sender === 'object' ? (msg.sender._id || msg.sender.id) : msg.sender;
     const activeId = activeContact ? (activeContact._id || activeContact.id) : null;
     if (activeId === senderId) {
       addMessageToUI(msg);
     }
+    // Update contact list to show last message (optional enhancement)
   });
 
-  socket.on('messageSent', (msg) => addMessageToUI(msg));
+  socket.on('messageSent', (msg) => {
+    console.log('Confirmation messageSent:', msg);
+    addMessageToUI(msg);
+  });
+
+  socket.on('messageError', (data) => {
+    console.error('Message Error:', data);
+    alert('Failed to send message: ' + (data.error || 'Unknown error'));
+  });
+  
+  socket.on('error', (err) => console.error('Socket Global Error:', err));
+  
   loadContacts();
 });
